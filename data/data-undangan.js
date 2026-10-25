@@ -16,7 +16,7 @@ const DATA_UNDANGAN = {
   "kategori": "khitan",
   "kode": "dar123",
   // Ganti dengan alamat undangan setelah dipasang di hosting.
-  "siteUrl": "https://NAMAANDA.github.io/NAMA-REPO/khitan-raka/",
+  "siteUrl": "https://ddarkan03-ux.github.io/Khitan-Raka-V2/",
   // Firebase diperlukan untuk menyimpan dan berbagi ucapan secara online.
   // Jika belum memakai Firebase, biarkan apiKey dan projectId kosong.
   "firebase": { "apiKey": "AIzaSyBEA92p-xAjSyvDTWT09-zsuEDyjZg2dZw", "projectId": "undangan-saya" },
