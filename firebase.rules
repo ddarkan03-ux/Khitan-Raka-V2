@@ -1,9 +1,7 @@
 rules_version = '2';
-// Tempel di Firebase Console > Firestore Database > Rules, lalu Publish.
 service cloud.firestore {
   match /databases/{db}/documents {
 
-    // Admin = akun dengan email "<kode>@admin.undangan" (dibuat di Authentication)
     function admin(kode) {
       return request.auth != null && request.auth.token.email == kode + '@admin.undangan';
     }
@@ -14,7 +12,6 @@ service cloud.firestore {
 
     match /undangan/{kode} {
 
-      // Ucapan tamu: siapa pun boleh menulis; dibaca semua tamu bila "ucapanPublik" menyala
       match /ucapan/{id} {
         allow read: if admin(kode) || publik(kode);
         allow create: if request.resource.data.keys().hasOnly(['nama', 'pesan', 'hadir', 'waktu'])
@@ -29,12 +26,10 @@ service cloud.firestore {
         allow delete: if admin(kode);
       }
 
-      // Daftar tamu: hanya admin
       match /tamu/{id} {
         allow read, write: if admin(kode);
       }
 
-      // Pengaturan: semua boleh baca, hanya admin boleh ubah
       match /pengaturan/{id} {
         allow read: if true;
         allow write: if admin(kode);
