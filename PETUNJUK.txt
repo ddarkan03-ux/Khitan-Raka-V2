@@ -1,0 +1,132 @@
+UNDANGAN KHITAN VERSI 2 (Mahkota Emas)
+============================================================
+
+  Tema: royal, mahkota emas dan pola bintang Islami (khatam).
+  Warna: biru malam + emas.
+  Efek: debu emas berkilau jatuh perlahan, nama putra berkilau emas bergerak.
+  Sampul: tirai terbuka dari tengah. Muncul saat di-scroll: memudar dari buram menjadi jelas.
+  Desain: bingkai garis ganda emas, kartu persegi bersudut tegas, hiasan belah ketupat.
+  Gaya musik yang cocok: Orkestra Arabian sinematik (oud, biola/string, duduk) (tempo 80-95 BPM, megah tapi lembut).
+
+============================================================
+PENGATURAN (SAMA PERSIS UNTUK SEMUA VERSI)
+============================================================
+
+
+ISI FOLDER
+  musik/                  tempat file musik latar (opsional)
+  index.html              halaman undangan (tidak perlu diubah)
+  admin.html              panel admin untuk klien (daftar tamu, ucapan, pengaturan)
+  js/fb.js                penghubung ke Firebase (tidak perlu diubah)
+  firebase.rules          aturan keamanan Firestore (tempel di Firebase)
+  tools/sinkron-meta.py   pembuat pratinjau link (jalankan tiap klien baru)
+  data/data-undangan.js   data undangan (INI yang diganti per klien)
+  foto/                   foto klien (sampul, latar-utama, bingkai, penutup, galeri-1 dst)
+  Foto yang ada sekarang hanya CONTOH. Ganti dengan foto klien.
+
+UPLOAD KE GITHUB
+  1. Upload ISI folder ini (index.html, folder data, folder foto)
+     ke repo. Boleh dalam sub-folder, mis. repo/khitan-raka/.
+  2. Alamat undangan: https://NAMAANDA.github.io/NAMA-REPO/khitan-raka/
+  3. Nama tamu di sampul: tambahkan ?to=Nama Tamu di akhir alamat,
+     contoh: .../khitan-raka/?to=Bapak Andi
+
+MEMBUAT UNDANGAN UNTUK KLIEN BARU (dari ZIP klien)
+  1. Salin folder ini, beri nama baru (mis. khitan-raka).
+  2. Ekstrak ZIP klien. Dari dalamnya:
+       - salin isi folder "data"  -> timpa data/data-undangan.js
+       - salin isi folder "foto"  -> timpa folder foto
+  3. Lengkapi "kode", "siteUrl", "firebase" dan jalankan tools/sinkron-meta.py
+     (lihat UCAPAN & PANEL ADMIN (ucapan terlihat oleh semua tamu)
+  Memakai Firebase (gratis, paket Spark). Cukup disiapkan SEKALI per proyek.
+  Halaman tetap statis dan jalan di GitHub Pages.
+
+  A. SIAPKAN FIREBASE (sekali)
+    1. console.firebase.google.com > Add project (Analytics boleh dimatikan).
+    2. Build > Firestore Database > Create database (mode production,
+       lokasi asia-southeast2 / Jakarta).
+    3. Tab Rules: hapus isinya, tempel isi file firebase.rules, klik Publish.
+    4. Build > Authentication > Get started > Sign-in method > aktifkan
+       Email/Password. (Bila ada opsi "Enable create (sign-up)", matikan
+       setelah langkah B.)
+    5. Project settings (ikon roda gigi) > General > Your apps > ikon "</>"
+       (Web) > daftarkan aplikasi. Salin "apiKey" dan "projectId".
+       Kunci ini memang boleh terlihat publik; keamanan diatur oleh Rules.
+
+  B. SETIAP KLIEN
+    1. Di data/data-undangan.js isi:
+         "kode":      nama unik huruf kecil tanpa spasi, mis. "raka-2026"
+         "siteUrl":   alamat lengkap undangan, mis.
+                      "https://namaanda.github.io/repo/khitan-raka/"
+         "firebase":  { "apiKey": "...", "projectId": "..." }
+         "ucapanPublik": true  (nilai awal; klien bisa ubah di panel admin)
+    2. Authentication > Users > Add user:
+         Email    : <kode>@admin.undangan     (contoh: raka-2026@admin.undangan)
+         Password : kata sandi untuk klien (min. 6 karakter)
+       Klien login di panel hanya dengan kata sandi ini.
+       Satu proyek Firebase bisa untuk banyak klien selama "kode" berbeda;
+       setiap klien hanya bisa mengelola datanya sendiri.
+    3. Jalankan  python3 tools/sinkron-meta.py  (lihat bagian PRATINJAU LINK).
+    4. Upload semua ke GitHub.
+
+  C. PANEL ADMIN UNTUK KLIEN
+    Alamat:  .../khitan-raka/admin.html   (kirim alamat + kata sandi ke klien)
+    - Tamu: klien menulis sendiri nama tamu (satu per satu atau banyak
+      sekaligus, boleh dengan no. WhatsApp). Tiap tamu otomatis punya link
+      pribadi (?to=Nama), lengkap dengan tombol "Kirim WhatsApp", "Salin
+      pesan", dan "Salin link". Ada penanda Terkirim / Sudah mengucapkan.
+    - Ucapan: klien membaca semua ucapan dan bisa menghapus yang tidak pantas.
+    - Pengaturan:
+        * "Tampilkan ucapan ke tamu lain" ON  -> semua tamu saling melihat ucapan.
+                                          OFF -> hanya klien yang bisa membaca.
+        * "Tampilkan Turut Mengundang" ON/OFF.
+        * "Tampilkan rekening 1" dan "rekening 2" ON/OFF (maksimal 2 rekening;
+          bila keduanya OFF, bagian Tanda Kasih ikut hilang).
+        * Pesan undangan bisa diubah (kata {nama} {putra} {ortu} {tanggal} {jam}
+          {tempat} {link} diganti otomatis).
+
+  Isi rekening ("hadiah") dan daftar "turutMengundang" tetap ditulis di
+  data/data-undangan.js; panel admin hanya mengatur tampil atau tidaknya.
+  Tanpa Firebase, atur lewat data: "turutMengundangTampil": false, dan
+  "tampil": false pada rekening yang ingin disembunyikan.
+
+  D. KALAU FIREBASE BELUM DIISI
+    Undangan tetap jalan seperti sebelumnya: ucapan hanya tampil di HP tamu
+    itu sendiri dan dikirim ke WhatsApp tuan rumah. Panel admin menampilkan
+    pesan "Belum disambungkan".
+
+PRATINJAU LINK (foto + teks saat link dikirim di WhatsApp)
+  WhatsApp membaca foto dan teks pratinjau dari tag meta di index.html.
+  Tag ini harus sudah tertulis di file (tidak bisa dibuat oleh JavaScript),
+  jadi setelah mengganti data & foto klien, jalankan sekali:
+      pip install pillow          (sekali saja)
+      python3 tools/sinkron-meta.py
+  Skrip ini membuat foto/og.jpg (1200x630 dari foto-putra/cover) dan mengisi
+  judul + teks pratinjau dari data klien. "siteUrl" harus sudah benar.
+  Pratinjau sama untuk semua tamu (foto putra + "Undangan Khitanan Raka" +
+  tanggal & tempat). Nama tamu yang dituju tampil di TEKS PESAN di atas link
+  (dibuat panel admin) dan di sampul undangan saat dibuka.
+  Bila pratinjau lama masih muncul, itu cache WhatsApp: tambahkan akhiran
+  baru pada link, mis. ?to=Bapak Andi&v=2.
+
+ANIMASI
+  Bagian undangan muncul dengan efek halus saat di-scroll (naik, zoom,
+  geser, memantul), dan halaman utama beranimasi saat undangan dibuka.
+  Otomatis mati bila HP tamu memakai pengaturan "kurangi gerakan".
+
+CATATAN
+  - Font memakai Google Fonts (perlu internet); tanpa internet tampil
+    dengan font cadangan.
+  - Foto klien sebaiknya JPG, lebar 1200-1600 px agar cepat dimuat.
+
+MUSIK LATAR
+  1. Siapkan file musik berformat MP3 (disarankan 1-3 menit, di bawah 3 MB,
+     bitrate 128 kbps). Musik akan diputar berulang (loop).
+  2. Simpan di folder "musik" (mis. musik/lagu.mp3).
+  3. Di data/data-undangan.js isi:   "musik": "musik/lagu.mp3"
+  4. Musik mulai otomatis saat tamu menekan "Buka undangan". Tombol bulat
+     di pojok kanan bawah untuk menghentikan atau memutar lagi.
+  Bila "musik" kosong atau bukan nama file (mp3/m4a/ogg/wav), tombol musik
+  tidak muncul. Rekomendasi gaya musik tiap versi ada di REKOMENDASI-MUSIK.txt.
+  Pakai lagu bebas hak cipta / berlisensi; periksa syarat lisensinya
+  (boleh untuk website, perlu mencantumkan kredit atau tidak).
