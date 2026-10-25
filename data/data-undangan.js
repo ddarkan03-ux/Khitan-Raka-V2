@@ -19,7 +19,7 @@ const DATA_UNDANGAN = {
   "siteUrl": "https://NAMAANDA.github.io/NAMA-REPO/khitan-raka/",
   // Firebase diperlukan untuk menyimpan dan berbagi ucapan secara online.
   // Jika belum memakai Firebase, biarkan apiKey dan projectId kosong.
-  "firebase": { "apiKey": "dar123", "projectId": "https://undangan-saya-default-rtdb.asia-southeast1.firebasedatabase.app" },
+  "firebase": { "apiKey": "AIzaSyBEA92p-xAjSyvDTWT09-zsuEDyjZg2dZw", "projectId": "undangan-saya" },
   // true = ucapan dapat dilihat tamu lain; false = tidak ditampilkan untuk umum.
   "ucapanPublik": true,
   // Informasi pemesan undangan; nomor WhatsApp gunakan kode negara tanpa tanda +.
